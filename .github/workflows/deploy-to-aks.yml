@@ -1,0 +1,62 @@
+name: Deploy to AKS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  ACR_NAME: myacrregistry
+  RESOURCE_GROUP: my-resource-group
+  CLUSTER_NAME: my-aks-cluster
+  IMAGE_TAG: ${{ github.sha }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Login to Azure Container Registry
+      run: |
+        az acr login --name ${{ env.ACR_NAME }}
+
+    - name: Build and push backend image
+      run: |
+        docker build -t ${{ env.ACR_NAME }}.azurecr.io/backend:${{ env.IMAGE_TAG }} ./backend
+        docker push ${{ env.ACR_NAME }}.azurecr.io/backend:${{ env.IMAGE_TAG }}
+
+    - name: Build and push frontend image
+      run: |
+        docker build -t ${{ env.ACR_NAME }}.azurecr.io/frontend:${{ env.IMAGE_TAG }} ./frontend
+        docker push ${{ env.ACR_NAME }}.azurecr.io/frontend:${{ env.IMAGE_TAG }}
+
+    - name: Set AKS context
+      uses: azure/aks-set-context@v3
+      with:
+        resource-group: ${{ env.RESOURCE_GROUP }}
+        cluster-name: ${{ env.CLUSTER_NAME }}
+
+    - name: Deploy to AKS
+      run: |
+        # Replace placeholders in YAML files
+        export ACR_NAME=${{ env.ACR_NAME }}
+        export IMAGE_TAG=${{ env.IMAGE_TAG }}
+        
+        for file in k8s/*.yaml; do
+          envsubst < $file | kubectl apply -f -
+        done
+
+    - name: Verify deployment
+      run: |
+        kubectl rollout status deployment/backend
+        kubectl rollout status deployment/frontend
+        kubectl get services
