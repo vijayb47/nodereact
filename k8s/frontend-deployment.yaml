@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: ${ACR_NAME}.azurecr.io/frontend:${IMAGE_TAG}
+        image: ${DOCKERHUB_USERNAME}/frontend:${IMAGE_TAG}
         ports:
         - containerPort: 80
         resources:

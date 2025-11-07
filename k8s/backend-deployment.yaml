@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: ${ACR_NAME}.azurecr.io/backend:${IMAGE_TAG}
+        image: ${DOCKERHUB_USERNAME}/backend:${IMAGE_TAG}
         ports:
         - containerPort: 3001
         env:
