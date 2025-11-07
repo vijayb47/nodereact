@@ -24,7 +24,7 @@ Health checks and resource limits
 
 GitHub Actions Pipeline:
 
-Builds and pushes Docker images to ACR
+Builds and pushes Docker images to Docker Hub
 Deploys to AKS cluster
 Uses git commit SHA for image tagging
 
@@ -32,7 +32,8 @@ Uses git commit SHA for image tagging
 
 To use this:
 
-Set up Azure resources (ACR and AKS cluster)
+Set up Azure resources (AKS cluster)
+Set up Docker Hub token
 Create a service principal and add credentials to GitHub Secrets
 Update the workflow environment variables with your ACR name, resource group, and cluster name
 Push to main branch to trigger deployment
