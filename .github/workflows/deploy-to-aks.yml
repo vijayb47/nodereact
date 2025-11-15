@@ -8,8 +8,8 @@ on:
 
 env:
   DOCKERHUB_USERNAME: vijayb47
-  RESOURCE_GROUP: my-resource-group
-  CLUSTER_NAME: my-aks-cluster
+  RESOURCE_GROUP: rg-aks-portal-sandbox
+  CLUSTER_NAME: aks-portal-sandbox
   IMAGE_TAG: ${{ github.sha }}
 
 jobs:
