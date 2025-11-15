@@ -11,6 +11,7 @@ env:
   RESOURCE_GROUP: rg-aks-portal-sandbox
   CLUSTER_NAME: aks-portal-sandbox
   IMAGE_TAG: ${{ github.sha }}
+  environment: sandbox
 
 jobs:
   build-and-deploy:
