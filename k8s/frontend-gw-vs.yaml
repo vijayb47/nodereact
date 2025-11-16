@@ -16,12 +16,12 @@ spec:
    tls:
      credentialName: istio-ingressgateway-certs
      mode: SIMPLE
- # - hosts:
- #   - dev.tfnextgenportal.com
- #   port:
- #     name: http
- #     number: 80
- #     protocol: HTTP
+ - hosts:
+   - dev.tfnextgenportal.com
+   port:
+     name: http
+     number: 80
+     protocol: HTTP
 
 
 ---
