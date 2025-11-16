@@ -1,0 +1,47 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+ name: portal-gw
+ namespace: portal
+spec:
+ selector:
+   istio: aks-istio-ingressgateway-external #-internal
+ servers:
+ - hosts:
+   - dev.tfnextgenportal.com
+   port:
+     name: https
+     number: 443
+     protocol: HTTPS
+   tls:
+     credentialName: istio-ingressgateway-certs
+     mode: SIMPLE
+ # - hosts:
+ #   - kube-onboarding-services.nonprod.west.ontada.mckesson.com
+ #   port:
+ #     name: http
+ #     number: 80
+ #     protocol: HTTP
+
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+ name: portal-vs
+ namespace: portal
+spec:
+ gateways:
+ - portal/portal-gw
+ hosts:
+ - dev.tfnextgenportal.com
+ http:
+ - match:
+   - uri:
+       prefix: / 
+   route:
+   - destination:
+       host: frontend-service
+       port:
+         number: 80
+
