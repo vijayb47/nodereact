@@ -17,7 +17,7 @@ spec:
      credentialName: istio-ingressgateway-certs
      mode: SIMPLE
  # - hosts:
- #   - kube-onboarding-services.nonprod.west.ontada.mckesson.com
+ #   - dev.tfnextgenportal.com
  #   port:
  #     name: http
  #     number: 80
